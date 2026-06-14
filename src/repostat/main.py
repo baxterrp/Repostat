@@ -1,8 +1,8 @@
 from typing import Any
-from rich import print_json
+from models import Repository
 
-import json
 import httpx
+
 
 def get_repo(owner: str, repo_name: str) -> dict[str, Any]:
     url = f"https://api.github.com/repos/{owner}/{repo_name}"
@@ -10,20 +10,21 @@ def get_repo(owner: str, repo_name: str) -> dict[str, Any]:
     response.raise_for_status()
     return response.json()
 
+
 def main():
     owner = "baxterrp"
     repo_name = "repostat"
     repo_info = get_repo(owner, repo_name)
-    print_repo_info(repo_info)
+    rep = Repository(
+        full_name=repo_info["full_name"],
+        description=repo_info["description"],
+        stargazers_count=repo_info["stargazers_count"],
+        default_branch=repo_info["default_branch"],
+        topics=repo_info.get("topics", []),
+    )
 
-def print_repo_info(repo_info: dict[str, Any]) -> None:
-    topic_delimeter = ", "
-    print(f"response: {print_json(json.dumps(repo_info))}")
-    print(f"repository: {repo_info['full_name']}")
-    print(f"description: {repo_info['description']}")
-    print(f"stars: {repo_info['stargazers_count']}")
-    print(f"default branch: {repo_info['default_branch']}")
-    print(f"topics: {topic_delimeter.join(repo_info.get('topics') or [])}")
+    print(rep.summarize())
+
 
 if __name__ == "__main__":
     main()
