@@ -11,7 +11,7 @@ def fetch(owner: str, repo_name: str) -> dict[str, Any]:
     return response.json()
 
 
-def print_repository_stats(owner: str, repo_name: str) -> None:
+def print_repository_stats(owner: str, repo_name: str, json: bool) -> None:
     repo_info = fetch(owner, repo_name)
     rep = Repository(
         full_name=repo_info["full_name"],
@@ -21,4 +21,7 @@ def print_repository_stats(owner: str, repo_name: str) -> None:
         topics=repo_info.get("topics", []),
     )
 
-    print(rep.summarize())
+    if json:
+        print(repo_info)
+    else:
+        print(rep.summarize())
