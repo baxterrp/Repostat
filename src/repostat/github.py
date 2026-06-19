@@ -24,12 +24,12 @@ def fetch(client: httpx.Client, owner: str, repo_name: str) -> dict[str, Any]:
         raise
 
 
-def print_repository_stats(owner: str, repo_name: str, json: bool) -> None:
+def print_repository_stats(owner: str, repo_name: str, use_json: bool) -> None:
     try:
         with _build_client() as client:
             repo_info = fetch(client, owner, repo_name)
 
-        _print_repo_details(repo_info, json)
+        _print_repo_details(repo_info, use_json)
     except RepositoryNotFoundError as e:
         logger.error(e)
         raise typer.Exit(1)
