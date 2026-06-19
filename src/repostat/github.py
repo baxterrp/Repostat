@@ -24,24 +24,10 @@ def fetch(client: httpx.Client, owner: str, repo_name: str) -> dict[str, Any]:
 
 
 def print_repository_stats(owner: str, repo_name: str, json: bool) -> None:
-    token = os.getenv("GITHUB_TOKEN")
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-
     try:
-        with httpx.Client(headers=headers) as client:
+        with _build_client() as client:
             repo_info = fetch(client, owner, repo_name)
-
-        rep = Repository(
-            full_name=repo_info["full_name"],
-            description=repo_info["description"],
-            stargazers_count=repo_info["stargazers_count"],
-            default_branch=repo_info["default_branch"],
-            topics=repo_info.get("topics", []),
-        )
-
-        response = repo_info if json else rep.summarize()
-        logger.debug("Repository info for %s/%s: %s", owner, repo_name, response)
-        print(response)
+        _print_repo_details(repo_info, json)
     except RepositoryNotFoundError as e:
         logger.error(e)
         raise typer.Exit(1)
@@ -58,3 +44,25 @@ def print_repository_stats(owner: str, repo_name: str, json: bool) -> None:
     except Exception as e:
         logger.error("Unexpected error for %s/%s: %s", owner, repo_name, e)
         raise typer.Exit(1)
+
+
+def _build_client() -> httpx.Client:
+    token = os.getenv("GITHUB_TOKEN")
+    headers = {"Authorization": f"Bearer {token}"} if token else {}
+    return httpx.Client(headers=headers)
+
+
+def _build_repo_details(repo_info: dict[str, Any]) -> Repository:
+    return Repository(
+        full_name=repo_info["full_name"],
+        description=repo_info["description"],
+        stargazers_count=repo_info["stargazers_count"],
+        default_branch=repo_info["default_branch"],
+        topics=repo_info.get("topics", []),
+    )
+
+
+def _print_repo_details(repo_info: dict[str, Any], json: bool) -> None:
+    rep = _build_repo_details(repo_info)
+    response = repo_info if json else rep.summarize()
+    print(response)
