@@ -1,7 +1,7 @@
 import typer
-
 from dotenv import load_dotenv
 from typing_extensions import Annotated
+
 from repostat.github import print_repository_stats
 
 

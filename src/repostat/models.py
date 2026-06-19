@@ -12,4 +12,10 @@ class Repository:
     def summarize(self) -> str:
         topic_delimeter = ", "
         topics = topic_delimeter.join(self.topics)
-        return f"Repository: {self.full_name}\nDescription: {self.description}\nStars: {self.stargazers_count}\nDefault Branch: {self.default_branch}\nTopics: {topics}"
+        return (
+            f"Repository: {self.full_name}\n"
+            f"Description: {self.description}\n"
+            f"Stars: {self.stargazers_count}\n"
+            f"Default Branch: {self.default_branch}\n"
+            f"Topics: {topics}"
+        )

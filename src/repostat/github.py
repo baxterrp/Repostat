@@ -1,12 +1,13 @@
-from typing import Any
-from repostat.exceptions import RepositoryNotFoundError
-from repostat.models import Repository
-
-import os
 import json as json_lib
+import logging
+import os
+from typing import Any
+
 import httpx
 import typer
-import logging
+
+from repostat.exceptions import RepositoryNotFoundError
+from repostat.models import Repository
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ def print_repository_stats(owner: str, repo_name: str, json: bool) -> None:
     try:
         with _build_client() as client:
             repo_info = fetch(client, owner, repo_name)
+
         _print_repo_details(repo_info, json)
     except RepositoryNotFoundError as e:
         logger.error(e)
