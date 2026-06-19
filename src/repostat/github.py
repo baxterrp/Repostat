@@ -1,4 +1,4 @@
-import json as json_lib
+import json
 import logging
 import os
 from typing import Any
@@ -38,7 +38,7 @@ def print_repository_stats(owner: str, repo_name: str, use_json: bool) -> None:
             "Error fetching repository info for %s/%s: %s", owner, repo_name, e
         )
         raise typer.Exit(1)
-    except (KeyError, json_lib.JSONDecodeError) as e:
+    except (KeyError, json.JSONDecodeError) as e:
         logger.error(
             "Missing key in repository info for %s/%s: %s", owner, repo_name, e
         )
@@ -64,7 +64,7 @@ def _build_repo_details(repo_info: dict[str, Any]) -> Repository:
     )
 
 
-def _print_repo_details(repo_info: dict[str, Any], json: bool) -> None:
+def _print_repo_details(repo_info: dict[str, Any], use_json: bool) -> None:
     rep = _build_repo_details(repo_info)
-    response = repo_info if json else rep.summarize()
+    response = json.dumps(repo_info, indent=2) if use_json else rep.summarize()
     print(response)
