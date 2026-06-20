@@ -6,12 +6,14 @@ from typing import Any
 import httpx
 import typer
 
+from repostat.decorators import retry
 from repostat.exceptions import RepositoryNotFoundError
 from repostat.models import Repository
 
 logger = logging.getLogger(__name__)
 
 
+@retry(max_attempts=3, exclusions=(RepositoryNotFoundError,))
 def fetch(client: httpx.Client, owner: str, repo_name: str) -> dict[str, Any]:
     logger.info("Fetching repository info for %s/%s", owner, repo_name)
     url = f"https://api.github.com/repos/{owner}/{repo_name}"

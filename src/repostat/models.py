@@ -15,5 +15,5 @@ class Repository:
             f"Description: {self.description}\n"
             f"Stars: {self.stargazers_count}\n"
             f"Default Branch: {self.default_branch}\n"
-            f"Topics: {", ".join(self.topics)}"
+            f"Topics: {', '.join(self.topics)}"
         )
