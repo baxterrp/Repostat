@@ -156,8 +156,8 @@ def test_print_repo_stats_logs_error_on_key_error(caplog):
         respx.get(expected_github_url).mock(
             return_value=httpx.Response(200, json={"full_name": "owner/repo"})
         )
-        with pytest.raises(typer.Exit):
-            with caplog.at_level(logging.ERROR):
+        with caplog.at_level(logging.ERROR):
+            with pytest.raises(typer.Exit):
                 github.print_repository_stats("owner", "repo", False)
     assert "Missing key in repository info for owner/repo" in caplog.text
 
@@ -169,8 +169,8 @@ def test_print_repo_stats_handles_unexpected_exception(
         raise RuntimeError("unexpected")
 
     monkeypatch.setattr(github, "fetch", explode)
-    with pytest.raises(typer.Exit):
-        with caplog.at_level(logging.ERROR):
+    with caplog.at_level(logging.ERROR):
+        with pytest.raises(typer.Exit):
             github.print_repository_stats("owner", "repo", False)
 
     assert "Unexpected error for owner/repo" in caplog.text

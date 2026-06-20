@@ -118,12 +118,6 @@ wheels = [
 ]
 
 [[package]]
-name = "monkeypatch"
-version = "0.1rc3"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/6e/bc/5858288bc758c03efd8ad324f32bd2fee453d6c5008967e9c762b4d608ba/monkeypatch-0.1rc3.zip", hash = "sha256:615e4ea62d498857cd4d9d9a8fe956028762155d6d6240ac3eff643e4007e50f", size = 7897, upload-time = "2011-06-20T13:53:48.037Z" }
-
-[[package]]
 name = "nodeenv"
 version = "1.10.0"
 source = { registry = "https://pypi.org/simple" }
@@ -203,9 +197,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
-    { name = "monkeypatch" },
     { name = "python-dotenv" },
-    { name = "respx" },
     { name = "rich" },
     { name = "typer" },
 ]
@@ -214,15 +206,14 @@ dependencies = [
 dev = [
     { name = "pyright" },
     { name = "pytest" },
+    { name = "respx" },
     { name = "ruff" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "httpx", specifier = ">=0.28.1" },
-    { name = "monkeypatch", specifier = ">=0.1rc3" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
-    { name = "respx", specifier = ">=0.23.1" },
     { name = "rich", specifier = ">=15.0.0" },
     { name = "typer", specifier = ">=0.26.7" },
 ]
@@ -231,6 +222,7 @@ requires-dist = [
 dev = [
     { name = "pyright", specifier = ">=1.1.410" },
     { name = "pytest", specifier = ">=9.0.3" },
+    { name = "respx", specifier = ">=0.23.1" },
     { name = "ruff", specifier = ">=0.15.16" },
 ]
 
